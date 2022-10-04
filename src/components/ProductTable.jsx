@@ -18,9 +18,18 @@ export default function ProductTable({ products, filterText, inStockOnly }) {
   //     change = product.category;
   //   });
 
+  console.log(filterText);
+  console.log(inStockOnly);
+
   //   map이용
   const rows = products.map((product, idx) => {
-    console.log(idx);
+    if (product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+      return;
+    }
+    if (inStockOnly && !product.stocked) {
+      return;
+    }
+
     if (idx == 0) {
       return (
         <>
