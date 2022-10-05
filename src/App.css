@@ -53,3 +53,21 @@ ul {
 .large {
   border: 4px solid gold;
 }
+
+/*  */
+
+.card {
+  width: fit-content;
+  margin: 5px;
+  padding: 5px;
+  font-size: 20px;
+  text-align: center;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+  background: #fff;
+  color: red;
+}
+.avatar {
+  margin: 20px;
+  border-radius: 50%;
+}
