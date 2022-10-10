@@ -1,75 +1,31 @@
-// // Rendering Lists
+import { sculptureList } from "./data";
 
-// import { recipes } from "./data.js";
+import React, { useState } from "react";
 
-// // export default function App() {
-// //   return (
-// //     <div>
-// //       <h1>Recipes</h1>
-// //       {recipes.map((recipe) => {
-// //         const { id, name, ingredients } = recipe;
-// //         return (
-// //           <div key={id}>
-// //             <h2>{name}</h2>
-// //             <ul>
-// //               {ingredients.map((ingredient) => (
-// //                 <li key={ingredient}>{ingredient}</li>
-// //               ))}
-// //             </ul>
-// //           </div>
-// //         );
-// //       })}
-// //     </div>
-// //   );
-// // }
+const App = () => {
+  const [index, setIndex] = useState(0);
+  const [open, setOpen] = useState(false);
 
-// const Recipe = ({ id, name, ingredients }) => {
-//   return (
-//     <div>
-//       <h2>{name}</h2>
-//       <ul>
-//         {ingredients.map((ingredient) => {
-//           return <li key={ingredient}>{ingredient}</li>;
-//         })}
-//       </ul>
-//     </div>
-//   );
-// };
+  if (index >= sculptureList.length - 1) {
+    setIndex(0);
+  }
+  const model = sculptureList[index];
 
-// // 부모 -> 자식
-// const App = () => {
-//   return (
-//     <div>
-//       <h1>Recipes</h1>
-//       {recipes.map((recipe) => {
-//         return <Recipe {...recipe} key={recipe.id} />;
-//       })}
-//     </div>
-//   );
-// };
+  const PlusIndex = (e) => setIndex(index + 1);
 
-// export default App;
-
-// Rendering Lists 4
-import React, { Fragment } from "react";
-
-const poem = {
-  lines: [
-    "I write, erase, rewrite",
-    "Erase again, and then",
-    "A poppy blooms.",
-  ],
+  const Open = () => setOpen(!open);
+  return (
+    <div>
+      <button onClick={PlusIndex}>Next</button>
+      <h2>{model.name}</h2>
+      <div>
+        ({index + 1} of {sculptureList.length})
+      </div>
+      <button onClick={Open}>{open ? "Hide" : "Open"}</button>
+      <p>{model.description}</p>
+      {open && <img src={model.url} alt={model.alt} />}
+    </div>
+  );
 };
 
-export default function Poem() {
-  return (
-    <article>
-      {poem.lines.map((line, i) => (
-        <Fragment key={i}>
-          {i > 0 && <hr />}
-          <p>{line}</p>
-        </Fragment>
-      ))}
-    </article>
-  );
-}
+export default App;
