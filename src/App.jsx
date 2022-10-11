@@ -1,75 +1,55 @@
 import { useState } from "react";
+import "./App.css";
+export default function Picture() {
+  const initialItems = [
+    { title: "pretzels", id: 0 },
+    { title: "crispy seaweed", id: 1 },
+    { title: "granola bar", id: 2 },
+  ];
+  const [items, setItems] = useState(initialItems);
+  const [selectedId, setSelectedId] = useState(0);
 
-const styled = {
-  motion: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-  },
-};
+  const selectedItem = items.find((item) => item.id === selectedId);
 
-const App = () => {
-  const Answer = (answer) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        let shouldError = answer.toLowerCase().trim() !== "kyle";
-        if (shouldError) {
-          reject(new Error("Good guess but a wrong answer. Try again!"));
+  const handleItemChange = (id, e) => {
+    setItems(
+      items.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            title: e.target.value,
+          };
         } else {
-          resolve();
+          return item;
         }
-      }, 2000);
-    });
+      })
+    );
   };
-
-  const [answer, setAnswer] = useState("");
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState("typing");
-
-  if (status === "success") {
-    return <h1>That's right!</h1>;
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setStatus("submitting");
-    try {
-      await Answer(answer);
-
-      setStatus("success");
-
-      setAnswer("");
-    } catch (err) {
-      setStatus("typing");
-      console.log(err);
-      setError(err);
-      setAnswer("");
-    }
-  }
+  console.log(items);
+  console.log(selectedItem);
   return (
     <>
-      <h1>City Quiz</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, sint
-        voluptatibus! Labore impedit natus earum mollitia? Magnam dolore
-        corrupti quam quo voluptas possimus cum, similique error magni?
-        Perspiciatis, repellat neque!
-      </p>
-      <form style={styled.motion} onSubmit={handleSubmit}>
-        <textarea
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          id="textarea"
-          name="textarea"
-          placeholder="Enter "
-        />
-        <button disabled={answer.length === 0 || status === "submitting"}>
-          Submit
-        </button>
-        {error !== null && <p className="Error">{error.message}</p>}
-      </form>
+      <h2>What's your travel snack?</h2>{" "}
+      <ul>
+        {items.map((item, idx) => {
+          return (
+            <li key={item.id}>
+              <input
+                value={item.title}
+                onChange={(e) => handleItemChange(item.id, e)}
+              />{" "}
+              <button
+                onClick={() => {
+                  setSelectedId(item.id);
+                }}
+              >
+                Choose
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      <p>{selectedItem.title}</p>
     </>
   );
-};
-
-export default App;
+}

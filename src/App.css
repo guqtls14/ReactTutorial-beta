@@ -46,28 +46,32 @@ ul {
   padding-left: 20px;
 }
 
-.avatar {
-  border-radius: 50%;
+body {
+  margin: 0;
+  padding: 0;
+  height: 250px;
 }
 
-.large {
-  border: 4px solid gold;
+.background {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eee;
 }
 
-/*  */
-
-.card {
-  width: fit-content;
-  margin: 5px;
-  padding: 5px;
-  font-size: 20px;
-  text-align: center;
-  border: 1px solid #aaa;
-  border-radius: 20px;
-  background: #fff;
-  color: red;
+.background--active {
+  background: #a6b5ff;
 }
-.avatar {
-  margin: 20px;
-  border-radius: 50%;
+
+.picture {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  border: 5px solid transparent;
+}
+
+.picture--active {
+  border: 5px solid #a6b5ff;
 }
