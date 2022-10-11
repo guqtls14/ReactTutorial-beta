@@ -1,55 +1,52 @@
-import { useState } from "react";
-import "./App.css";
-export default function Picture() {
+import React, { useState } from "react";
+import Additem from "./components/Additem";
+import ItemList from "./components/ItemList";
+
+let itemIndex = 3;
+const App = () => {
   const initialItems = [
-    { title: "pretzels", id: 0 },
-    { title: "crispy seaweed", id: 1 },
-    { title: "granola bar", id: 2 },
+    { id: 0, title: "Warm socks", packed: true },
+    { id: 1, title: "Travel journal", packed: false },
+    { id: 2, title: "Watercolors", packed: false },
   ];
-  const [items, setItems] = useState(initialItems);
-  const [selectedId, setSelectedId] = useState(0);
 
-  const selectedItem = items.find((item) => item.id === selectedId);
+  const [data, setData] = useState(initialItems);
 
-  const handleItemChange = (id, e) => {
-    setItems(
-      items.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            title: e.target.value,
-          };
+  // filter packed number
+  const packed = data.filter((item) => item.packed).length;
+
+  // Add Item
+  const onItem = (item) => {
+    setData([...data, { id: itemIndex++, title: item, packed: false }]);
+  };
+
+  // onDelete
+  const onDelete = (id) => {
+    const newItem = data.filter((item) => item.id !== id);
+    setData(newItem);
+  };
+
+  // check
+  const onCheck = (nextItem) => {
+    setData(
+      data.map((item) => {
+        if (item.id === nextItem.id) {
+          return nextItem;
         } else {
           return item;
         }
       })
     );
   };
-  console.log(items);
-  console.log(selectedItem);
   return (
     <>
-      <h2>What's your travel snack?</h2>{" "}
-      <ul>
-        {items.map((item, idx) => {
-          return (
-            <li key={item.id}>
-              <input
-                value={item.title}
-                onChange={(e) => handleItemChange(item.id, e)}
-              />{" "}
-              <button
-                onClick={() => {
-                  setSelectedId(item.id);
-                }}
-              >
-                Choose
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <p>{selectedItem.title}</p>
+      <Additem addItem={onItem} />
+      <ItemList item={data} onDelete={onDelete} onCheck={onCheck} />
+      <p>
+        {packed} out of {data.length} packed!
+      </p>
     </>
   );
-}
+};
+
+export default App;
