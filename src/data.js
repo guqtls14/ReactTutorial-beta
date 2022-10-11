@@ -1,3 +1,4 @@
+//
 export function filterItems(items, query) {
   query = query.toLowerCase();
   return items.filter((item) =>
