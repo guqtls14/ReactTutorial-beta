@@ -1,52 +1,44 @@
-import React, { useState } from "react";
-import Additem from "./components/Additem";
-import ItemList from "./components/ItemList";
+import { useState } from "react";
+import { letters } from "./data";
+import Letter from "./Letter";
 
-let itemIndex = 3;
-const App = () => {
-  const initialItems = [
-    { id: 0, title: "Warm socks", packed: true },
-    { id: 1, title: "Travel journal", packed: false },
-    { id: 2, title: "Watercolors", packed: false },
-  ];
+export default function MailClient() {
+  const [selectedIds, setSelectedIds] = useState([]);
 
-  const [data, setData] = useState(initialItems);
+  // TODO: allow multiple selection
+  const selectedCount = selectedIds.length;
 
-  // filter packed number
-  const packed = data.filter((item) => item.packed).length;
-
-  // Add Item
-  const onItem = (item) => {
-    setData([...data, { id: itemIndex++, title: item, packed: false }]);
-  };
-
-  // onDelete
-  const onDelete = (id) => {
-    const newItem = data.filter((item) => item.id !== id);
-    setData(newItem);
-  };
-
-  // check
-  const onCheck = (nextItem) => {
-    setData(
-      data.map((item) => {
-        if (item.id === nextItem.id) {
-          return nextItem;
-        } else {
-          return item;
-        }
-      })
-    );
-  };
+  function handleToggle(toggledId) {
+    // Was it previously selected?
+    if (selectedIds.includes(toggledId)) {
+      // Then remove this ID from the array.
+      setSelectedIds(selectedIds.filter((id) => id !== toggledId));
+    } else {
+      // Otherwise, add this ID to the array.
+      setSelectedIds([...selectedIds, toggledId]);
+    }
+  }
+  // console.log('2" ', selectedIds);
   return (
     <>
-      <Additem addItem={onItem} />
-      <ItemList item={data} onDelete={onDelete} onCheck={onCheck} />
-      <p>
-        {packed} out of {data.length} packed!
-      </p>
+      <h2>Inbox</h2>
+      <ul>
+        {letters.map((letter) => (
+          <Letter
+            key={letter.id}
+            letter={letter}
+            isSelected={
+              // TODO: allow multiple selection
+              selectedIds.includes(letter.id)
+            }
+            onToggle={handleToggle}
+          />
+        ))}
+        <hr />
+        <p>
+          <b>You selected {selectedCount} letters</b>
+        </p>
+      </ul>
     </>
   );
-};
-
-export default App;
+}
