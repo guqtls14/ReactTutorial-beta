@@ -1,75 +1,75 @@
-// // Rendering Lists
+import { useState } from "react";
 
-// import { recipes } from "./data.js";
-
-// // export default function App() {
-// //   return (
-// //     <div>
-// //       <h1>Recipes</h1>
-// //       {recipes.map((recipe) => {
-// //         const { id, name, ingredients } = recipe;
-// //         return (
-// //           <div key={id}>
-// //             <h2>{name}</h2>
-// //             <ul>
-// //               {ingredients.map((ingredient) => (
-// //                 <li key={ingredient}>{ingredient}</li>
-// //               ))}
-// //             </ul>
-// //           </div>
-// //         );
-// //       })}
-// //     </div>
-// //   );
-// // }
-
-// const Recipe = ({ id, name, ingredients }) => {
-//   return (
-//     <div>
-//       <h2>{name}</h2>
-//       <ul>
-//         {ingredients.map((ingredient) => {
-//           return <li key={ingredient}>{ingredient}</li>;
-//         })}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// // 부모 -> 자식
-// const App = () => {
-//   return (
-//     <div>
-//       <h1>Recipes</h1>
-//       {recipes.map((recipe) => {
-//         return <Recipe {...recipe} key={recipe.id} />;
-//       })}
-//     </div>
-//   );
-// };
-
-// export default App;
-
-// Rendering Lists 4
-import React, { Fragment } from "react";
-
-const poem = {
-  lines: [
-    "I write, erase, rewrite",
-    "Erase again, and then",
-    "A poppy blooms.",
-  ],
+const styled = {
+  motion: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+  },
 };
 
-export default function Poem() {
+const App = () => {
+  const Answer = (answer) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let shouldError = answer.toLowerCase().trim() !== "kyle";
+        if (shouldError) {
+          reject(new Error("Good guess but a wrong answer. Try again!"));
+        } else {
+          resolve();
+        }
+      }, 2000);
+    });
+  };
+
+  const [answer, setAnswer] = useState("");
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("typing");
+
+  if (status === "success") {
+    return <h1>That's right!</h1>;
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("submitting");
+    try {
+      await Answer(answer);
+
+      setStatus("success");
+
+      setAnswer("");
+    } catch (err) {
+      setStatus("typing");
+      console.log(err);
+      setError(err);
+      setAnswer("");
+    }
+  }
   return (
-    <article>
-      {poem.lines.map((line, i) => (
-        <Fragment key={i}>
-          {i > 0 && <hr />}
-          <p>{line}</p>
-        </Fragment>
-      ))}
-    </article>
+    <>
+      <h1>City Quiz</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, sint
+        voluptatibus! Labore impedit natus earum mollitia? Magnam dolore
+        corrupti quam quo voluptas possimus cum, similique error magni?
+        Perspiciatis, repellat neque!
+      </p>
+      <form style={styled.motion} onSubmit={handleSubmit}>
+        <textarea
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          id="textarea"
+          name="textarea"
+          placeholder="Enter "
+        />
+        <button disabled={answer.length === 0 || status === "submitting"}>
+          Submit
+        </button>
+        {error !== null && <p className="Error">{error.message}</p>}
+      </form>
+    </>
   );
-}
+};
+
+export default App;
