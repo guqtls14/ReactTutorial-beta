@@ -1,3 +1,4 @@
+import "./App.css";
 export default function Letter({ letter, onToggle, isSelected }) {
   return (
     <li className={isSelected ? "selected" : ""}>

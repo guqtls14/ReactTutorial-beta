@@ -18,7 +18,7 @@ export default function MailClient() {
       setSelectedIds([...selectedIds, toggledId]);
     }
   }
-  // console.log('2" ', selectedIds);
+  console.log('2" ', selectedIds);
   return (
     <>
       <h2>Inbox</h2>
